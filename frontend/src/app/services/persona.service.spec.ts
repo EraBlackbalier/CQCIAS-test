@@ -23,7 +23,16 @@ describe('PersonaService', () => {
   });
 
   it('should list personas', () => {
-    const personas: Persona[] = [{ id: 1, nombre: 'Ana', telefono: '5551234567', activo: true }];
+    const personas: Persona[] = [
+      {
+        id: 1,
+        nombre: 'Ana',
+        primer_apellido: 'López',
+        segundo_apellido: null,
+        telefono: '5551234567',
+        estatus: 'A',
+      },
+    ];
 
     service.listar().subscribe((response) => {
       expect(response).toEqual(personas);

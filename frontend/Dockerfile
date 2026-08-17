@@ -8,12 +8,12 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
 ENV API_HOST=host.docker.internal
 ENV API_PORT=8080
 
-COPY nginx.conf.template /etc/nginx/templates/default.conf.template
-COPY --from=build /app/dist/frontend/browser /usr/share/nginx/html
+COPY --chown=101:101 nginx.conf.template /etc/nginx/templates/default.conf.template
+COPY --from=build --chown=101:101 /app/dist/frontend/browser /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 8080

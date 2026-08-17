@@ -1,24 +1,32 @@
-<section aria-labelledby="personas-heading">
-  <h2 id="personas-heading" class="h4 mb-3">Personas</h2>
-
-  <div class="table-responsive">
-    <table class="table table-striped align-middle">
+<section aria-label="Listado de personas">
+  <div class="table-wrap">
+    <table>
       <thead>
         <tr>
-          <th scope="col">Nombre</th>
+          <th scope="col">Persona</th>
           <th scope="col">Teléfono</th>
-          <th scope="col" class="text-end">Acciones</th>
+          <th scope="col">Estado</th>
+          <th scope="col"><span class="visually-hidden">Acciones</span></th>
         </tr>
       </thead>
       <tbody>
         @for (persona of personas(); track persona.id) {
           <tr>
-            <td>{{ persona.nombre }}</td>
-            <td>{{ persona.telefono }}</td>
-            <td class="text-end">
+            <td>
+              <div class="person-cell">
+                <span class="avatar" aria-hidden="true">{{ persona.nombre.charAt(0) }}</span>
+                <strong>{{ nombreCompleto(persona) }}</strong>
+              </div>
+            </td>
+            <td>
+              <a class="phone-link" [href]="'tel:' + persona.telefono">{{ persona.telefono }}</a>
+            </td>
+            <td><span class="status-badge">Activa</span></td>
+            <td class="action-cell">
               <button
                 type="button"
-                class="btn btn-outline-primary btn-sm"
+                class="detail-button"
+                [attr.aria-label]="'Ver detalle de ' + nombreCompleto(persona)"
                 (click)="detalle.emit(persona)"
               >
                 Ver detalle
@@ -27,7 +35,7 @@
           </tr>
         } @empty {
           <tr>
-            <td colspan="3" class="text-muted">No hay personas para mostrar.</td>
+            <td colspan="4" class="empty-state">No hay personas para mostrar.</td>
           </tr>
         }
       </tbody>

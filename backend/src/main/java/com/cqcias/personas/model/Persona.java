@@ -1,5 +1,6 @@
 package com.cqcias.personas.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,27 +9,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "personas")
+@Table(name = "persona")
 public class Persona {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@Column(nullable = false, length = 100)
 	private String nombre;
 
-	@Column(nullable = false, length = 20)
+	@JsonProperty("primer_apellido")
+	@Column(name = "primer_apellido", nullable = false, length = 100)
+	private String primerApellido;
+
+	@JsonProperty("segundo_apellido")
+	@Column(name = "segundo_apellido", length = 100)
+	private String segundoApellido;
+
+	@Column(nullable = false, length = 10)
 	private String telefono;
 
-	@Column(nullable = false)
-	private boolean activo = true;
+	@Column(nullable = false, length = 1)
+	private String estatus = "A";
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -40,6 +49,22 @@ public class Persona {
 		this.nombre = nombre;
 	}
 
+	public String getPrimerApellido() {
+		return primerApellido;
+	}
+
+	public void setPrimerApellido(String primerApellido) {
+		this.primerApellido = primerApellido;
+	}
+
+	public String getSegundoApellido() {
+		return segundoApellido;
+	}
+
+	public void setSegundoApellido(String segundoApellido) {
+		this.segundoApellido = segundoApellido;
+	}
+
 	public String getTelefono() {
 		return telefono;
 	}
@@ -48,11 +73,11 @@ public class Persona {
 		this.telefono = telefono;
 	}
 
-	public boolean isActivo() {
-		return activo;
+	public String getEstatus() {
+		return estatus;
 	}
 
-	public void setActivo(boolean activo) {
-		this.activo = activo;
+	public void setEstatus(String estatus) {
+		this.estatus = estatus;
 	}
 }

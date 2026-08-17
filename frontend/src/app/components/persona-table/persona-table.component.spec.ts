@@ -21,17 +21,31 @@ describe('PersonaTableComponent', () => {
   it('should show the name and phone number', () => {
     const fixture = TestBed.createComponent(PersonaTableComponent);
     fixture.componentRef.setInput('personas', [
-      { id: 1, nombre: 'Ana', telefono: '5551234567', activo: true },
+      {
+        id: 1,
+        nombre: 'Ana',
+        primer_apellido: 'López',
+        segundo_apellido: null,
+        telefono: '5551234567',
+        estatus: 'A',
+      },
     ]);
     fixture.detectChanges();
 
     const element = fixture.nativeElement as HTMLElement;
-    expect(element.textContent).toContain('Ana');
+    expect(element.textContent).toContain('Ana López');
     expect(element.textContent).toContain('5551234567');
   });
 
   it('should emit the selected persona', () => {
-    const persona = { id: 1, nombre: 'Ana', telefono: '5551234567', activo: true };
+    const persona = {
+      id: 1,
+      nombre: 'Ana',
+      primer_apellido: 'López',
+      segundo_apellido: null,
+      telefono: '5551234567',
+      estatus: 'A' as const,
+    };
     const fixture = TestBed.createComponent(PersonaTableComponent);
     const detalle = vi.fn();
 

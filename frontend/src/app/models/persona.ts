@@ -1,6 +1,8 @@
 export interface Persona {
   id: number;
   nombre: string;
+  primer_apellido: string;
+  segundo_apellido: string | null;
   telefono: string;
-  activo: boolean;
+  estatus: 'A' | 'I';
 }

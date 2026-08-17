@@ -8,5 +8,5 @@ import com.cqcias.personas.model.Persona;
 
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
 
-	List<Persona> findByActivoTrue();
+	List<Persona> findByEstatus(String estatus);
 }

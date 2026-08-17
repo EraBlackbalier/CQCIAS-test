@@ -21,6 +21,6 @@ public class PersonaController {
 
 	@GetMapping
 	public List<Persona> listarActivas() {
-		return personaRepository.findByActivoTrue();
+		return personaRepository.findByEstatus("A");
 	}
 }

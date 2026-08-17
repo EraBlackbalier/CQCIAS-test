@@ -4,34 +4,80 @@ services:
       context: ./mysql
     container_name: cqcias-mysql
     environment:
-      MYSQL_DATABASE: cqcias
-      MYSQL_USER: cqcias
-      MYSQL_PASSWORD: cqcias
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-cqcias}
+      MYSQL_USER: ${MYSQL_USER:-cqcias}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in backend/.env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD in backend/.env}
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "MYSQL_PWD=$${MYSQL_ROOT_PASSWORD} mysqladmin ping -h localhost -uroot --silent"]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 20s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
   backend:
     build:
       context: .
     container_name: cqcias-backend
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/cqcias
-      DB_USER: cqcias
-      DB_PASSWORD: cqcias
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-cqcias}
+      DB_USER: ${MYSQL_USER:-cqcias}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in backend/.env}
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       mysql:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/api/personas"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ../frontend
+    container_name: cqcias-frontend
+    environment:
+      API_HOST: backend
+      API_PORT: 8080
+    ports:
+      - "127.0.0.1:4200:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /etc/nginx/conf.d:uid=101,gid=101,mode=0755
+      - /tmp:uid=101,gid=101,mode=1777
+      - /var/cache/nginx:uid=101,gid=101,mode=0755
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
 
 volumes:
   mysql-data:

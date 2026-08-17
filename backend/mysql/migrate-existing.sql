@@ -12,9 +12,21 @@ CREATE TABLE IF NOT EXISTS persona (
     CONSTRAINT chk_persona_telefono CHECK (CHAR_LENGTH(telefono) = 10)
 );
 
-INSERT IGNORE INTO persona
+INSERT INTO persona
     (id, nombre, primer_apellido, segundo_apellido, telefono, estatus)
-VALUES
-    (1, 'Ana', 'López', 'Martínez', '5551234567', 'A'),
-    (2, 'Carlos', 'Pérez', 'Ramírez', '5557654321', 'A'),
-    (3, 'María', 'García', 'Torres', '5559876543', 'I');
+SELECT
+    id,
+    SUBSTRING_INDEX(nombre, ' ', 1),
+    SUBSTRING_INDEX(nombre, ' ', -1),
+    NULL,
+    LEFT(telefono, 10),
+    IF(activo, 'A', 'I')
+FROM personas
+ON DUPLICATE KEY UPDATE
+    nombre = VALUES(nombre),
+    primer_apellido = VALUES(primer_apellido),
+    segundo_apellido = VALUES(segundo_apellido),
+    telefono = VALUES(telefono),
+    estatus = VALUES(estatus);
+
+DROP TABLE personas;

@@ -33,21 +33,25 @@ class PersonaControllerTest {
 	@Test
 	void devuelvePersonasActivas() throws Exception {
 		Persona persona = new Persona();
-		persona.setId(1L);
-		persona.setNombre("Ana López");
+		persona.setId(1);
+		persona.setNombre("Ana");
+		persona.setPrimerApellido("López");
+		persona.setSegundoApellido("Martínez");
 		persona.setTelefono("5551234567");
-		persona.setActivo(true);
+		persona.setEstatus("A");
 
-		when(personaRepository.findByActivoTrue()).thenReturn(List.of(persona));
+		when(personaRepository.findByEstatus("A")).thenReturn(List.of(persona));
 
 		mockMvc.perform(get("/api/personas"))
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$[0].id").value(1))
-				.andExpect(jsonPath("$[0].nombre").value("Ana López"))
+				.andExpect(jsonPath("$[0].nombre").value("Ana"))
+				.andExpect(jsonPath("$[0].primer_apellido").value("López"))
+				.andExpect(jsonPath("$[0].segundo_apellido").value("Martínez"))
 				.andExpect(jsonPath("$[0].telefono").value("5551234567"))
-				.andExpect(jsonPath("$[0].activo").value(true));
+				.andExpect(jsonPath("$[0].estatus").value("A"));
 
-		verify(personaRepository).findByActivoTrue();
+		verify(personaRepository).findByEstatus("A");
 	}
 }

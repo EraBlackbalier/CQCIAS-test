@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { PersonaTableComponent } from './components/persona-table/persona-table.component';
@@ -19,6 +19,7 @@ export class App implements OnInit {
   protected readonly cargando = signal(true);
   protected readonly error = signal('');
   protected readonly personaSeleccionada = signal<Persona | null>(null);
+  protected readonly totalPersonas = computed(() => this.personas().length);
 
   ngOnInit(): void {
     this.cargarPersonas();
@@ -27,6 +28,7 @@ export class App implements OnInit {
   protected cargarPersonas(): void {
     this.cargando.set(true);
     this.error.set('');
+    this.personaSeleccionada.set(null);
 
     this.personaService.listar().subscribe({
       next: (personas) => {
@@ -42,5 +44,15 @@ export class App implements OnInit {
 
   protected seleccionarPersona(persona: Persona): void {
     this.personaSeleccionada.set(persona);
+  }
+
+  protected nombreCompleto(persona: Persona): string {
+    return [persona.nombre, persona.primer_apellido, persona.segundo_apellido]
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  protected cerrarDetalle(): void {
+    this.personaSeleccionada.set(null);
   }
 }

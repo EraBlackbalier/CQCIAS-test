@@ -1,32 +1,90 @@
-<main class="container py-4">
-  <h1 class="mb-4">{{ title() }}</h1>
-
-  @if (cargando()) {
-    <p class="text-muted" role="status">Cargando personas...</p>
-  } @else if (error()) {
-    <div class="alert alert-danger" role="alert">
-      <p class="mb-2">{{ error() }}</p>
-      <button type="button" class="btn btn-sm btn-outline-danger" (click)="cargarPersonas()">
-        Reintentar
-      </button>
-    </div>
-  } @else {
-    <app-persona-table [personas]="personas()" (detalle)="seleccionarPersona($event)" />
-  }
-
-  @if (personaSeleccionada(); as persona) {
-    <section class="card mt-4" aria-labelledby="detalle-heading">
-      <div class="card-body">
-        <h2 id="detalle-heading" class="h4">Detalle de persona</h2>
-        <dl class="row mb-0">
-          <dt class="col-sm-3">Nombre</dt>
-          <dd class="col-sm-9">{{ persona.nombre }}</dd>
-          <dt class="col-sm-3">Teléfono</dt>
-          <dd class="col-sm-9 mb-0">{{ persona.telefono }}</dd>
-        </dl>
+<div class="page-shell">
+  <header class="hero">
+    <div class="container hero-content">
+      <div class="brand-mark">
+        <img src="/cqcias-logo.png" alt="Logo de CQCIAS" />
       </div>
-    </section>
-  }
+      <div>
+        <p class="eyebrow">Directorio operativo</p>
+        <h1>{{ title() }}</h1>
+        <p class="hero-copy">Información de contacto clara, disponible y actualizada.</p>
+      </div>
+    </div>
+  </header>
 
-  <router-outlet />
-</main>
+  <main class="container dashboard">
+    <section class="summary-card" aria-label="Resumen del directorio">
+      <div>
+        <span class="summary-label">Personas activas</span>
+        <strong>{{ totalPersonas() }}</strong>
+      </div>
+      @if (!cargando() && !error()) {
+        <span class="connection-status"><span aria-hidden="true"></span>Servicio conectado</span>
+      }
+    </section>
+
+    <section class="directory-card" aria-labelledby="directory-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Consulta rápida</p>
+          <h2 id="directory-heading">Directorio de personas</h2>
+        </div>
+        <p>Selecciona un registro para consultar sus datos completos.</p>
+      </div>
+
+      @if (cargando()) {
+        <div class="state-panel" role="status">
+          <span class="loader" aria-hidden="true"></span>
+          Cargando personas...
+        </div>
+      } @else if (error()) {
+        <div class="state-panel state-panel-error" role="alert">
+          <div>
+            <strong>No pudimos conectar con el servicio</strong>
+            <p>{{ error() }}</p>
+          </div>
+          <button type="button" class="secondary-button" (click)="cargarPersonas()">
+            Reintentar
+          </button>
+        </div>
+      } @else {
+        <app-persona-table [personas]="personas()" (detalle)="seleccionarPersona($event)" />
+      }
+    </section>
+
+    @if (personaSeleccionada(); as persona) {
+      <aside class="detail-card" aria-labelledby="detalle-heading">
+        <div class="detail-header">
+          <div>
+            <p class="eyebrow">Registro seleccionado</p>
+            <h2 id="detalle-heading">{{ nombreCompleto(persona) }}</h2>
+          </div>
+          <button
+            type="button"
+            class="close-button"
+            aria-label="Cerrar detalle"
+            (click)="cerrarDetalle()"
+          >
+            ×
+          </button>
+        </div>
+        <dl class="detail-grid">
+          <div>
+            <dt>Teléfono</dt>
+            <dd>
+              <a [href]="'tel:' + persona.telefono">{{ persona.telefono }}</a>
+            </dd>
+          </div>
+          <div>
+            <dt>Estado</dt>
+            <dd><span class="active-badge">Activa</span></dd>
+          </div>
+        </dl>
+      </aside>
+    }
+
+    <router-outlet />
+  </main>
+
+  <footer class="footer">CQCIAS · Directorio de personas</footer>
+</div>
