@@ -3,15 +3,20 @@
     <table>
       <thead>
         <tr>
-          <th scope="col">Persona</th>
+          <th scope="col">Nombre</th>
           <th scope="col">Teléfono</th>
-          <th scope="col">Estado</th>
-          <th scope="col"><span class="visually-hidden">Acciones</span></th>
         </tr>
       </thead>
       <tbody>
         @for (persona of personas(); track persona.id) {
-          <tr>
+          <tr
+            class="person-row"
+            tabindex="0"
+            [attr.aria-label]="'Ver detalle de ' + nombreCompleto(persona)"
+            (click)="detalle.emit(persona)"
+            (keydown.enter)="detalle.emit(persona)"
+            (keydown.space)="$event.preventDefault(); detalle.emit(persona)"
+          >
             <td>
               <div class="person-cell">
                 <span class="avatar" aria-hidden="true">{{ persona.nombre.charAt(0) }}</span>
@@ -19,23 +24,18 @@
               </div>
             </td>
             <td>
-              <a class="phone-link" [href]="'tel:' + persona.telefono">{{ persona.telefono }}</a>
-            </td>
-            <td><span class="status-badge">Activa</span></td>
-            <td class="action-cell">
-              <button
-                type="button"
-                class="detail-button"
-                [attr.aria-label]="'Ver detalle de ' + nombreCompleto(persona)"
-                (click)="detalle.emit(persona)"
+              <a
+                class="phone-link"
+                [href]="'tel:' + persona.telefono"
+                (click)="$event.stopPropagation()"
+                (keydown)="$event.stopPropagation()"
+                >{{ persona.telefono }}</a
               >
-                Ver detalle
-              </button>
             </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="4" class="empty-state">No hay personas para mostrar.</td>
+            <td colspan="2" class="empty-state">No hay personas para mostrar.</td>
           </tr>
         }
       </tbody>

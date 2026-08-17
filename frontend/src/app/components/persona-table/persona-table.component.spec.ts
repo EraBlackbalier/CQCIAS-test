@@ -37,6 +37,18 @@ describe('PersonaTableComponent', () => {
     expect(element.textContent).toContain('5551234567');
   });
 
+  it('should only show name and phone columns', () => {
+    const fixture = TestBed.createComponent(PersonaTableComponent);
+    fixture.detectChanges();
+
+    const element = fixture.nativeElement as HTMLElement;
+    const headers = Array.from(element.querySelectorAll<HTMLTableCellElement>('th')).map((header) =>
+      header.textContent?.trim(),
+    );
+
+    expect(headers).toEqual(['Nombre', 'Teléfono']);
+  });
+
   it('should emit the selected persona', () => {
     const persona = {
       id: 1,
@@ -53,8 +65,8 @@ describe('PersonaTableComponent', () => {
     fixture.componentInstance.detalle.subscribe(detalle);
     fixture.detectChanges();
 
-    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
-    button.click();
+    const row = fixture.nativeElement.querySelector('.person-row') as HTMLTableRowElement;
+    row.click();
 
     expect(detalle).toHaveBeenCalledWith(persona);
   });

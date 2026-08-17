@@ -75,8 +75,8 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
-    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
-    button.click();
+    const row = fixture.nativeElement.querySelector('.person-row') as HTMLTableRowElement;
+    row.click();
     fixture.detectChanges();
 
     const detail = fixture.nativeElement.querySelector('[aria-labelledby="detalle-heading"]');
@@ -88,8 +88,8 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
 
-    const detailButton = fixture.nativeElement.querySelector('.detail-button') as HTMLButtonElement;
-    detailButton.click();
+    const row = fixture.nativeElement.querySelector('.person-row') as HTMLTableRowElement;
+    row.click();
     fixture.detectChanges();
 
     const closeButton = fixture.nativeElement.querySelector('.close-button') as HTMLButtonElement;

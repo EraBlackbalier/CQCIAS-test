@@ -8,7 +8,7 @@
 
 table {
   border-collapse: collapse;
-  min-width: 660px;
+  min-width: 480px;
   width: 100%;
 }
 
@@ -28,12 +28,19 @@ td {
   padding: 1rem 1.5rem;
 }
 
-tbody tr {
+.person-row {
+  cursor: pointer;
+  outline: none;
   transition: background-color 0.2s ease;
 }
 
-tbody tr:hover {
+.person-row:hover,
+.person-row:focus-visible {
   background: #f8fbfc;
+}
+
+.person-row:focus-visible {
+  box-shadow: inset 4px 0 #24727b;
 }
 
 .person-cell {
@@ -65,47 +72,8 @@ tbody tr:hover {
   text-decoration: underline;
 }
 
-.status-badge {
-  background: #dff5ea;
-  border-radius: 999px;
-  color: #1d6a51;
-  font-size: 0.76rem;
-  font-weight: 700;
-  padding: 0.3rem 0.65rem;
-}
-
-.action-cell {
-  text-align: right;
-}
-
-.detail-button {
-  background: #fff;
-  border: 1px solid #7ea6ad;
-  border-radius: 9px;
-  color: #176b74;
-  cursor: pointer;
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 0.5rem 0.8rem;
-}
-
-.detail-button:hover,
-.detail-button:focus-visible {
-  background: #176b74;
-  color: #fff;
-}
-
 .empty-state {
   color: #6c808c;
   padding: 2rem;
   text-align: center;
-}
-
-.visually-hidden {
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
 }
