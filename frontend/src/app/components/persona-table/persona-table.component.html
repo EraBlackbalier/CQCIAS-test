@@ -7,6 +7,7 @@
         <tr>
           <th scope="col">Nombre</th>
           <th scope="col">Teléfono</th>
+          <th scope="col" class="text-end">Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -14,10 +15,19 @@
           <tr>
             <td>{{ persona.nombre }}</td>
             <td>{{ persona.telefono }}</td>
+            <td class="text-end">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="detalle.emit(persona)"
+              >
+                Ver detalle
+              </button>
+            </td>
           </tr>
         } @empty {
           <tr>
-            <td colspan="2" class="text-muted">No hay personas para mostrar.</td>
+            <td colspan="3" class="text-muted">No hay personas para mostrar.</td>
           </tr>
         }
       </tbody>

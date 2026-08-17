@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 
 import { Persona } from '../../models/persona';
 
@@ -8,4 +8,5 @@ import { Persona } from '../../models/persona';
 })
 export class PersonaTableComponent {
   readonly personas = input<Persona[]>([]);
+  readonly detalle = output<Persona>();
 }
