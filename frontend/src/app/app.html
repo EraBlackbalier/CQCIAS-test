@@ -1,0 +1,32 @@
+<main class="container py-4">
+  <h1 class="mb-4">{{ title() }}</h1>
+
+  @if (cargando()) {
+    <p class="text-muted" role="status">Cargando personas...</p>
+  } @else if (error()) {
+    <div class="alert alert-danger" role="alert">
+      <p class="mb-2">{{ error() }}</p>
+      <button type="button" class="btn btn-sm btn-outline-danger" (click)="cargarPersonas()">
+        Reintentar
+      </button>
+    </div>
+  } @else {
+    <app-persona-table [personas]="personas()" (detalle)="seleccionarPersona($event)" />
+  }
+
+  @if (personaSeleccionada(); as persona) {
+    <section class="card mt-4" aria-labelledby="detalle-heading">
+      <div class="card-body">
+        <h2 id="detalle-heading" class="h4">Detalle de persona</h2>
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Nombre</dt>
+          <dd class="col-sm-9">{{ persona.nombre }}</dd>
+          <dt class="col-sm-3">Teléfono</dt>
+          <dd class="col-sm-9 mb-0">{{ persona.telefono }}</dd>
+        </dl>
+      </div>
+    </section>
+  }
+
+  <router-outlet />
+</main>
