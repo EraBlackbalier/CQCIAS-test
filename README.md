@@ -5,6 +5,7 @@ Aplicación para consultar personas activas. El proyecto utiliza Angular para la
 ## Tecnologías
 
 - Angular 21
+- Bootstrap 5.3
 - Spring Boot 4.1
 - Java 17
 - MySQL 8.4
@@ -48,7 +49,7 @@ docker compose down
 Para consultar los datos de prueba directamente en MySQL:
 
 ```bash
-docker exec -it cqcias-mysql mysql -u cqcias -p cqcias
+docker exec -it cqcias-mysql mysql -u cqcias -p CQCIAS
 ```
 
 Escribe la contraseña configurada en `backend/.env` y ejecuta:

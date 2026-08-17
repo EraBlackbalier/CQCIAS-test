@@ -4,7 +4,7 @@ services:
       context: ./mysql
     container_name: cqcias-mysql
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-cqcias}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-CQCIAS}
       MYSQL_USER: ${MYSQL_USER:-cqcias}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in backend/.env}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Define MYSQL_ROOT_PASSWORD in backend/.env}
@@ -27,7 +27,7 @@ services:
       context: .
     container_name: cqcias-backend
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-cqcias}
+      DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-CQCIAS}
       DB_USER: ${MYSQL_USER:-cqcias}
       DB_PASSWORD: ${MYSQL_PASSWORD:?Define MYSQL_PASSWORD in backend/.env}
     ports:
