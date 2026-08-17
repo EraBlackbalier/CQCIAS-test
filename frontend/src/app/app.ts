@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { PersonaTableComponent } from './components/persona-table/persona-table.component';
@@ -46,13 +46,14 @@ export class App implements OnInit {
     this.personaSeleccionada.set(persona);
   }
 
-  protected nombreCompleto(persona: Persona): string {
-    return [persona.nombre, persona.primer_apellido, persona.segundo_apellido]
-      .filter(Boolean)
-      .join(' ');
-  }
-
   protected cerrarDetalle(): void {
     this.personaSeleccionada.set(null);
+  }
+
+  @HostListener('document:keydown.escape')
+  protected cerrarDetalleConEscape(): void {
+    if (this.personaSeleccionada()) {
+      this.cerrarDetalle();
+    }
   }
 }

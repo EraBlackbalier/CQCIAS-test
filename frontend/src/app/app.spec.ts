@@ -79,9 +79,26 @@ describe('App', () => {
     row.click();
     fixture.detectChanges();
 
-    const detail = fixture.nativeElement.querySelector('[aria-labelledby="detalle-heading"]');
-    expect(detail?.textContent).toContain('Ana López Martínez');
-    expect(detail?.textContent).toContain('5551234567');
+    const detail = fixture.nativeElement.querySelector('[role="dialog"]') as HTMLElement;
+    const labels = Array.from(detail.querySelectorAll('dt')).map((label) =>
+      label.textContent?.trim(),
+    );
+
+    expect(detail.getAttribute('aria-modal')).toBe('true');
+    expect(labels).toEqual([
+      'ID',
+      'Nombre',
+      'Primer apellido',
+      'Segundo apellido',
+      'Teléfono',
+      'Estatus',
+    ]);
+    expect(detail.textContent).toContain('1');
+    expect(detail.textContent).toContain('Ana');
+    expect(detail.textContent).toContain('López');
+    expect(detail.textContent).toContain('Martínez');
+    expect(detail.textContent).toContain('5551234567');
+    expect(detail.textContent).toContain('Activo');
   });
 
   it('should close the selected persona detail', () => {
@@ -96,7 +113,7 @@ describe('App', () => {
     closeButton.click();
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelector('[aria-labelledby="detalle-heading"]')).toBeNull();
+    expect(fixture.nativeElement.querySelector('[role="dialog"]')).toBeNull();
   });
 
   it('should show an error when personas cannot be loaded', () => {

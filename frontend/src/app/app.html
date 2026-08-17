@@ -52,12 +52,22 @@
       }
     </section>
 
-    @if (personaSeleccionada(); as persona) {
-      <aside class="detail-card" aria-labelledby="detalle-heading">
+    <router-outlet />
+  </main>
+
+  @if (personaSeleccionada(); as persona) {
+    <div class="modal-backdrop" (click)="cerrarDetalle()">
+      <section
+        class="detail-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="detalle-heading"
+        (click)="$event.stopPropagation()"
+      >
         <div class="detail-header">
           <div>
             <p class="eyebrow">Registro seleccionado</p>
-            <h2 id="detalle-heading">{{ nombreCompleto(persona) }}</h2>
+            <h2 id="detalle-heading">Detalle de persona</h2>
           </div>
           <button
             type="button"
@@ -68,7 +78,24 @@
             ×
           </button>
         </div>
+
         <dl class="detail-grid">
+          <div>
+            <dt>ID</dt>
+            <dd>{{ persona.id }}</dd>
+          </div>
+          <div>
+            <dt>Nombre</dt>
+            <dd>{{ persona.nombre }}</dd>
+          </div>
+          <div>
+            <dt>Primer apellido</dt>
+            <dd>{{ persona.primer_apellido }}</dd>
+          </div>
+          <div>
+            <dt>Segundo apellido</dt>
+            <dd>{{ persona.segundo_apellido || 'No registrado' }}</dd>
+          </div>
           <div>
             <dt>Teléfono</dt>
             <dd>
@@ -76,15 +103,20 @@
             </dd>
           </div>
           <div>
-            <dt>Estado</dt>
-            <dd><span class="active-badge">Activa</span></dd>
+            <dt>Estatus</dt>
+            <dd>
+              <span
+                class="status-badge"
+                [class.status-badge-inactive]="persona.estatus === 'I'"
+              >
+                {{ persona.estatus === 'A' ? 'Activo' : 'Inactivo' }}
+              </span>
+            </dd>
           </div>
         </dl>
-      </aside>
-    }
-
-    <router-outlet />
-  </main>
+      </section>
+    </div>
+  }
 
   <footer class="footer">CQCIAS · Directorio de personas</footer>
 </div>
