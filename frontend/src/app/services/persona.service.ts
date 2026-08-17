@@ -9,7 +9,7 @@ import { Persona } from '../models/persona';
 })
 export class PersonaService {
   private readonly http = inject(HttpClient);
-  private readonly apiUrl = 'http://localhost:8080/api/personas';
+  private readonly apiUrl = '/api/personas';
 
   listar(): Observable<Persona[]> {
     return this.http.get<Persona[]>(this.apiUrl);

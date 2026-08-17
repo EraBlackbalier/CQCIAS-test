@@ -29,7 +29,7 @@ describe('PersonaService', () => {
       expect(response).toEqual(personas);
     });
 
-    const request = httpTesting.expectOne('http://localhost:8080/api/personas');
+    const request = httpTesting.expectOne('/api/personas');
     expect(request.request.method).toBe('GET');
     request.flush(personas);
   });
